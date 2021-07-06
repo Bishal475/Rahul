@@ -8,9 +8,8 @@ router.get('/:name',async (req,res)=>{
     console.log(req.params);
     console.log(user);
     if(!user) res.status(404).send("Invalid Username!");
-    else{
-        if(!UserService.validate(req.body,user)) res.status(400).send("Invalid Password");
-        else res.send(user);
+    else{ 
+        res.send(user);
     }
     
 });

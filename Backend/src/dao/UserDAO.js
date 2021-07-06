@@ -9,20 +9,17 @@ mongoose.connect('mongodb://localhost:27017/users' , { useNewUrlParser : true , 
 async function saveUser(user){
     const data = new User(user);
     const result = await data.save();
-    mongoose.disconnect();
     return result;
 } 
 
 async function findAllUsers(){
     const result = await User.find().sort({ name : 1}).select({ _id : 0, name : 1 , email : 1, password :1});
-    mongoose.disconnect();
     return result;
 } 
 
 async function findUserByName(nam){
     try{
         const result = await User.findOne({ name : nam}).select({ _id : 0, name : 1 , email : 1, password :1});
-        mongoose.disconnect();
         return result;
     }
     catch(e){
@@ -33,7 +30,6 @@ async function findUserByName(nam){
 
  async function updateUser(id,user){
     const result = await User.findByIdAndUpdate(id,user);
-    mongoose.disconnect();
     return result;
 }
 

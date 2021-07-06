@@ -9,7 +9,7 @@ class UserService{
 
     getUser(nam){
         console.log("Name = ",nam)
-        return axios.get(BASE_URL+`name?=${nam}`)
+        return axios.get(BASE_URL+`${nam}`)
     }
 }
 

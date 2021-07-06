@@ -25,29 +25,35 @@ class Login extends Component {
         this.props.history.push('/register');
     }
 
-    loginClicked(event){
+    async loginClicked(event){
         event.preventDefault();
         console.log(this.state);
-        const usr = UserService.getUser(this.state.name);
-        if(this.state.name===usr.name && this.state.password===usr.password){
-            this.props.history.push(`/welcome/${this.state.name}`)
-            console.log(this.props.history)
-            // console.log(this.state.username)
-            sessionStorage.setItem("User",this.state.name);
-            // this.setState({
-            //     showSuccessMsg : true,
-            //     hasLoginFailed : false})
-        }else{
-            this.setState({
-                showSuccessMsg : false,
-                hasLoginFailed : true})
-        }
+        UserService.getUser(this.state.name)
+        .then(usr => {
+                console.log(usr);
+                if(usr.data.password===this.state.password){
+                    this.props.history.push(`/welcome/${usr.data.name}`)
+                    console.log(this.props.history)
+                    console.log(this.state.password)
+                    sessionStorage.setItem("User",this.state.name);
+                }
+                else{
+                    this.setState({
+                        showSuccessMsg : false,
+                        hasLoginFailed : true})
+                }
+            })
+            .catch(
+                this.setState({
+                    showSuccessMsg : false,
+                    hasLoginFailed : true})
+                );
     }
 
     render() { 
         return ( 
             <div> 
-                {this.state.hasLoginFailed && <div>Invalid Credentials</div>}
+                {this.state.hasLoginFailed && <div className="h2 text-danger">Invalid Credentials</div>}
                 {this.state.showSuccessMsg && <div>Login Success</div>}
                 <div className='container float-left'>
                     <form onSubmit={this.loginClicked}>
